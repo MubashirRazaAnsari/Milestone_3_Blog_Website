@@ -1,30 +1,25 @@
-import IdeaCard from "@/components/IdeaCard";
+import IdeaCard, { IdeaCardType } from "@/components/IdeaCard";
 import SeachForm from "../../components/SeachForm";
-
+import { IdeasQuery } from "@/sanity/lib/queries";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: Promise<{ query?: string }>;
 }) {
+
+
+
+
+
   const query = (await searchParams).query;
-  const ideas = [
-    {
-      _createdAt: new Date().toISOString(),
-      views:10,
-      image: 'https://picsum.photos/200/300',
-      id: 1,
-      title: 'We Robots',
-      description: 'This is a description of idea 1',
-      category: 'Technology',
-      
-      author:{
-        _id: '1',
-        name: 'John Doe',
-        authorImage: 'https://picsum.photos/48/48',
-      }
-    }
-  ];
+  const params = {search: query || null}
+
+  
+  const {data : ideas} = await sanityFetch({query: IdeasQuery, params});
+
+  
   return (
     <div>
       <section className="pink_container">
@@ -44,8 +39,9 @@ export default async function Home({
         </p>
         <ul className="mt-7 card_grid">
           {ideas.length > 0 ? (
-            ideas.map((idea) => (
-                <IdeaCard idea={idea} key={idea.id} />
+            ideas.map((idea: IdeaCardType, index: number) => (
+
+                <IdeaCard idea={idea} key={index} />
               
             ))
           ) : (
@@ -53,6 +49,7 @@ export default async function Home({
           )}
         </ul>
       </section>
+      <SanityLive />
     </div>
   );
 }

@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "predev": "npm run typegen",
+    "prebuild": "npm run typegen",
+    "typegen": "sanity schema extract --path=./sanity/extract.json && sanity typegen generate"
   },
   "packageManager": "pnpm@10.5.2",
   "overrides": {
@@ -15,6 +18,7 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",
+    "@sanity/client": "^6.24.1",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.68.1",
     "@tailwindcss/typography": "^0.5.15",
@@ -29,6 +33,7 @@
     "react-icons": "^5.4.0",
     "sanity": "^3.68.1",
     "sanity-plugin-markdown": "^5.0.0",
+    "server-only": "^0.0.1",
     "styled-components": "^6.1.13",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7"

@@ -7,6 +7,13 @@ export const author = defineType({
   type: "document",
   icon: UserIcon as any,
   fields: [
+    defineField({
+      name: "id",
+      title: "ID",
+      type: "string",
+      description: "ID for the author",
+      validation: (Rule) => Rule.required(),
+    }),
     // Name field
     defineField({
       name: "name",
@@ -40,12 +47,19 @@ export const author = defineType({
     }),
     // Author image field
     defineField({
-      name: "authorImage",
-      title: "Author Image",
-      type: "url",
-      description: "Upload an image of the author",
-    })
-    ,
+      name: 'authorImage',
+      title: 'Author Image',
+      type: 'image', // Sanity image asset
+      options: {
+        hotspot: true, // Allow for image cropping
+      },
+    }),
+    ({
+      name: 'authorImageUrl',
+      title: 'Author Image URL',
+      type: 'string', // URL field to store external URLs for images
+      validation: Rule => Rule.uri({ allowRelative: true }), // Validate the URL
+    }),
   ],
   preview: {
     select: {

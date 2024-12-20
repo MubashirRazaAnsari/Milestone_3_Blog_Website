@@ -15,15 +15,17 @@ export const idea = defineType({
       description: "Title of the idea",
       validation: (Rule) => Rule.required().min(2).warning("Title should be at least 2 characters."),
     }),
-    // Username field
     defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
+      options: {
+        source: "ideaTitle",
+        slugify: (input) => input.toLowerCase().replace(/\s+/g, '-'),
+      },
       description: "Unique slug for the idea",
       validation: (Rule) => Rule.required(),
     }),
-    // Email field
     defineField({
       name: "author",
       title: "Author",
@@ -38,28 +40,39 @@ export const idea = defineType({
       type: "number",
       description: "Number of views of the idea",
     }),
-    // Author image field
     defineField({
-      name: "ideaImage",
-      title: "Idea Image",
-      type: "image",
-      description: "Upload an image of the idea",
+      name: "description",
+      title: "Description",
+      type: "text",
+      description: "Description of the idea",
+    }),
+    defineField({
+      name: 'ideaImage',
+      title: 'Idea Image',
+      type: 'image', // Sanity image asset
       options: {
-        hotspot: true, // Allows image cropping in the studio
+        hotspot: true,
       },
+    }),
+    ({
+      name: 'ideaImageUrl',
+      title: 'Idea Image URL',
+      type: 'string', // URL field for external or dynamically generated URLs
+      validation: Rule => Rule.uri({ allowRelative: true }),
     }),
     defineField({
         name: "category",
         title: "Category",
         type: "string",
+        validation: (Rule) => Rule.min(1).max(20).required().warning("Category should be at least 20 characters."),
         description: "Category of the idea",
       })
     ,
     defineField({
-        name: "description",
-        title: "Description",
+        name: "pitch",
+        title: "Pitch",
         type: "markdown",
-        description: "Description of the idea",
+        description: "Pitch of the idea",
       }),
   ],
 });
