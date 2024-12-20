@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { auth, signIn, signOut } from '@/auth'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
-import github from 'next-auth/providers/github'
+
 
 
 
