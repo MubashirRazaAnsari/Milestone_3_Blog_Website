@@ -15,8 +15,32 @@ export const IdeasQuery = defineQuery(
     description,
     ideaImage,
     category,
-    pitch,
     viewCount
   }`
 );
 
+export const Ideas_by_id = defineQuery(`*[_type == "idea" && _id == $id][0]{
+  _id,
+  ideaTitle,
+  slug,
+  author->{
+    _id,
+    name,
+    username,
+    authorImage,
+    bio
+  },
+  description,
+  ideaImage,
+  category,
+  _createdAt,
+  pitch,
+  viewCount
+  }`)
+
+
+  export const StartViewCount = defineQuery(`*[_type == "idea" && _id == $id][0]{
+    _id,
+    viewCount
+  }`)
+    

@@ -7,14 +7,14 @@ import { Button } from "./ui/button";
 import { urlFor } from "@/sanity/lib/imageUrl";
 import { Idea, Author } from "@/sanity.types";
 
-export type IdeaCardType = Omit<Idea, "author"> & { author: Author }
+export type IdeaCardType = Omit<Idea, "author"> & { author: Author };
 const IdeaCard = ({ idea }: { idea: IdeaCardType }) => {
   const formattedDate = idea._createdAt ? formatDate(idea._createdAt) : "N/A";
   const authorName = idea.author.name || "Unknown Author";
   const ideaImageUrl = urlFor(idea.ideaImage).url();
   const authorImageUrl = urlFor(idea.author.authorImage).url();
 
-  const  {
+  const {
     ideaImage,
     ideaTitle,
     description,
@@ -31,7 +31,7 @@ const IdeaCard = ({ idea }: { idea: IdeaCardType }) => {
         <p className="startup-card_date">{formattedDate}</p>
         <div className="flex gap-1.5">
           <EyeIcon className="size-6 text-primary" />
-            <span className="text-16-semibold">{viewCount || 0}</span>
+          <span className="text-16-semibold">{viewCount || 0}</span>
         </div>
       </div>
       <div className="flex-between mt-5 gap-5">
@@ -58,23 +58,32 @@ const IdeaCard = ({ idea }: { idea: IdeaCardType }) => {
         </Link>
       </div>
       <Link href={`/idea/${_id}`}>
-        <p className='startup-card_description'>{description}</p>
+        <p className="startup-card_desc">{description}</p>
         {ideaImage ? (
-          <img src={ideaImageUrl} alt={ideaTitle} className="startup-card_img" /> 
+          <img
+            src={ideaImageUrl}
+            alt={ideaTitle}
+            className="startup-card_img"
+          />
         ) : (
-          <img src='https://picsum.photos/200/300' alt={ideaTitle} className="startup-card_img" /> 
+          <img
+            src="https://picsum.photos/200/300"
+            alt={ideaTitle}
+            className="startup-card_img"
+          />
         )}
       </Link>
       <div className="flex-between mt-5 gap-3">
         {category && (
-          <Link href={`/?query=${category.toLowerCase()}`} className="flex-center gap-2">
+          <Link
+            href={`/?query=${category.toLowerCase()}`}
+            className="flex-center gap-2"
+          >
             <p className="text-16-medium">{category}</p>
           </Link>
         )}
-        <Button className='startup-card_btn' asChild>
-          <Link href={`/idea/${_id}`}>
-            Details
-          </Link>
+        <Button className="startup-card_btn" asChild>
+          <Link href={`/idea/${_id}`}>Details</Link>
         </Button>
       </div>
     </li>

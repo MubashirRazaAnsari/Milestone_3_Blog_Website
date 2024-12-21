@@ -74,7 +74,7 @@ export type Idea = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  ideaTitle: string;
+  ideaTitle?: string;
   slug?: Slug;
   author?: {
     _ref: string;
