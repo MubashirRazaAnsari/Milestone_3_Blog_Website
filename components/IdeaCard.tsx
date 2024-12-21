@@ -10,9 +10,9 @@ import { Idea, Author } from "@/sanity.types";
 export type IdeaCardType = Omit<Idea, "author"> & { author: Author };
 const IdeaCard = ({ idea }: { idea: IdeaCardType }) => {
   const formattedDate = idea._createdAt ? formatDate(idea._createdAt) : "N/A";
-  const authorName = idea.author.name || "Unknown Author";
-  const ideaImageUrl = urlFor(idea.ideaImage).url();
-  const authorImageUrl = urlFor(idea.author.authorImage).url();
+  // const authorName = idea.author?.name || "Unknown Author";
+  // const ideaImageUrl = urlFor(idea.ideaImage).width(48).height(48).url()
+  // const authorImageUrl = urlFor(idea.author.authorImage).url();
 
   const {
     ideaImage,
@@ -37,7 +37,7 @@ const IdeaCard = ({ idea }: { idea: IdeaCardType }) => {
       <div className="flex-between mt-5 gap-5">
         <div className="flex-1">
           <Link href={`/user/${authorId}`}>
-            <p className="text-16-medium line-clamp-1">{authorName}</p>
+            <p className="text-16-medium line-clamp-1">{name}</p>
           </Link>
           <Link href={`/idea/${_id}`}>
             <h3 className="text-26-semibold line-clamp-1">{ideaTitle}</h3>
@@ -46,10 +46,10 @@ const IdeaCard = ({ idea }: { idea: IdeaCardType }) => {
         <Link href={`/user/${authorId}`} className="flex-center gap-2">
           {authorImage ? (
             <Image
-              src={authorImageUrl}
+              src={authorImage}
               width={48}
               height={48}
-              alt={authorName}
+              alt={"User Image"}
               className="rounded-full"
             />
           ) : (
@@ -61,7 +61,7 @@ const IdeaCard = ({ idea }: { idea: IdeaCardType }) => {
         <p className="startup-card_desc">{description}</p>
         {ideaImage ? (
           <img
-            src={ideaImageUrl}
+            src={ideaImage}
             alt={ideaTitle}
             className="startup-card_img"
           />

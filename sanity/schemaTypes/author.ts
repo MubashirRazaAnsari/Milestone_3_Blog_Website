@@ -1,5 +1,6 @@
-import { defineField, defineType } from "sanity";
+import { defineField, defineType, Image } from "sanity";
 import { UserIcon } from "@sanity/icons";
+import style from "styled-jsx/style";
 
 export const author = defineType({
   name: "author",
@@ -10,7 +11,7 @@ export const author = defineType({
     defineField({
       name: "id",
       title: "ID",
-      type: "string",
+      type: "number",
       description: "ID for the author",
       validation: (Rule) => Rule.required(),
     }),
@@ -49,22 +50,14 @@ export const author = defineType({
     defineField({
       name: 'authorImage',
       title: 'Author Image',
-      type: 'image', // Sanity image asset
-      options: {
-        hotspot: true, // Allow for image cropping
-      },
-    }),
-    ({
-      name: 'authorImageUrl',
-      title: 'Author Image URL',
-      type: 'string', // URL field to store external URLs for images
-      validation: Rule => Rule.uri({ allowRelative: true }), // Validate the URL
+      type: 'url', // URL field to store external URLs for images
+      validation: (Rule) => Rule.uri({ scheme: ['http', 'https'] }),
     }),
   ],
   preview: {
     select: {
       title: "name",
-      media: "authorImage",
+      imageUrl: "authorImage",
     },
-  },
+  }
 });

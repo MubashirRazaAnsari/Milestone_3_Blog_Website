@@ -43,4 +43,24 @@ export const Ideas_by_id = defineQuery(`*[_type == "idea" && _id == $id][0]{
     _id,
     viewCount
   }`)
-    
+
+  export const AUTHOR_By_GitHUB_ID = defineQuery(`*[_type == "author" && _Id == $id][0]{
+    _id,
+    id,
+    username,
+    email,
+    name,
+    authorImage,
+    bio
+  }`)
+
+  export const AUTHOR_By_Email = defineQuery(`*[_type == "author" && email == $email][0]{
+    _id,
+    id,
+    username,
+    email,
+    name,
+    authorImage,
+    bio
+  }`);
+

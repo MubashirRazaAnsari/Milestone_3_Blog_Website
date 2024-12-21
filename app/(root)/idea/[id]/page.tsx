@@ -14,12 +14,12 @@ import ViewCount from "@/components/ViewCount";
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;
 
-  console.log({ id });
+  // console.log({ id });
   const idea = await client.fetch(Ideas_by_id, { id });
 
   if (!idea) return notFound();
-  const ideaImageUrl = urlFor(idea.ideaImage).url();
-  const authorImageUrl = urlFor(idea.author.authorImage).url();
+  // const ideaImageUrl = urlFor(idea.ideaImage).url();
+  // const authorImageUrl = urlFor(idea.author.authorImage).url();
   const formattedDate = idea._createdAt ? formatDate(idea._createdAt) : "N/A";
 
   const parsedContent = marked(idea?.pitch || "");
@@ -33,7 +33,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
       </section>
       <section className="section_container">
         <Image
-          src={ideaImageUrl}
+          src={idea.ideaImage}
           alt={idea.ideaTitle}
           className="mx-auto !max-w-full max-h-[400px] lg:w-[80vw] md:w-[90vw] h-auto rounded-xl"
           width={900}
@@ -47,7 +47,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
               className="flex items-center mb-3 gap-2"
             >
               <Image
-                src={authorImageUrl}
+                src={idea.author.authorImage}
                 alt={idea.author.name}
                 className="drop-shadow-lg rounded-full"
                 width={64}

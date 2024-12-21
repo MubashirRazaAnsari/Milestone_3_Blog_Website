@@ -46,20 +46,13 @@ export const idea = defineType({
       type: "text",
       description: "Description of the idea",
     }),
-    defineField({
-      name: 'ideaImage',
-      title: 'Idea Image',
-      type: 'image', // Sanity image asset
-      options: {
-        hotspot: true,
-      },
-    }),
-    ({
-      name: 'ideaImageUrl',
-      title: 'Idea Image URL',
-      type: 'string', // URL field for external or dynamically generated URLs
-      validation: Rule => Rule.uri({ allowRelative: true }),
-    }),
+      defineField({
+        name: 'ideaImage',
+        title: 'Idea Image',
+        type: 'url', // Sanity image asset
+        validation: (Rule) => Rule.uri({ scheme: ['http', 'https'] }),
+      }),
+      
     defineField({
         name: "category",
         title: "Category",
@@ -75,4 +68,10 @@ export const idea = defineType({
         description: "Pitch of the idea",
       }),
   ],
+  preview: {
+    select: {
+      title: "ideaTitle",
+      imageUrl: "ideaImage",
+    },
+  },
 });
