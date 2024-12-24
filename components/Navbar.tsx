@@ -36,7 +36,7 @@ const Navbar = async () => {
 
                 {session &&session?.user ? ( 
                     <>
-                    <Link href={'/startup/create'}>
+                    <Link href={'/create'}>
                     <span>Create Startup</span>
                     
                     </Link>
