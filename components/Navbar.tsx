@@ -29,7 +29,7 @@ const Navbar = async () => {
     <header className="px-5 py-3 bg-white shadow-sm font-work-sans">
         <nav className="flex justify-between items-center text-base">
             <Link href="/">
-                <Image src="/logo.png" alt="LikeYou" width={80} height={40} />
+                <Image src="/logo.png" alt="LikeYou" width={80} height={40} className='w-auto' />
             </Link>
 
             <div className="flex items-center gap-4">
@@ -45,17 +45,17 @@ const Navbar = async () => {
                         <span>Sign Out</span>
                     </button>
 
-                    <Link href={`/profile/${session?.user?.id}`}>
+                    <Link href={`/user/${session?.user?.id}`}>
                         <span>{session?.user?.name}</span>
                     </Link>
                     </>
                 ) : (
                     <div className='flex items-center gap-2'>
                         <form action={handleSignInWithGithub} className='flex items-center gap-2'>
-                        <button type="submit" className='flex items-center gap-2'>Sign In <span><FaGithub className='text-sm' /></span></button>
+                        <button type="submit" className='flex items-center gap-2 shadow-xl p-2 rounded-xl'>Sign In <span><FaGithub className='text-sm' /></span></button>
                     </form>
                     <form action={handleSignInWithGoogle} className='flex items-center gap-2'>
-                        <button type="submit" className='flex items-center gap-2'>Sign In <span><FaGoogle className='text-sm' /></span></button>
+                        <button type="submit" className='flex items-center gap-2 p-2 shadow-xl rounded-xl'>Sign In <span><FaGoogle className='text-sm' /></span></button>
                     </form>
                     </div>
                 )}

@@ -3,38 +3,36 @@ import { Ideas_by_id } from "@/sanity/lib/queries";
 import React, { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils";
-import { urlFor } from "@/sanity/lib/imageUrl";
 import Image from "next/image";
 import Link from "next/link";
-
 import { marked } from "marked";
 import { Skeleton } from "@/components/ui/skeleton";
 import ViewCount from "@/components/ViewCount";
+import { auth } from "@/auth";
+import CommentSection from "@/components/comments/CommentSection";
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;
+  const session = await auth();
 
-  // console.log({ id });
   const idea = await client.fetch(Ideas_by_id, { id });
 
   if (!idea) return notFound();
-  // const ideaImageUrl = urlFor(idea.ideaImage).url();
-  // const authorImageUrl = urlFor(idea.author.authorImage).url();
   const formattedDate = idea._createdAt ? formatDate(idea._createdAt) : "N/A";
-
   const parsedContent = marked(idea?.pitch || "");
+
   return (
     <>
       <section className="pink_container !min-h-[230px]">
         <p className="tag">{formattedDate}</p>
-
         <h1 className="heading">{idea.ideaTitle}</h1>
         <p className="sub-heading !max-w-5xl">{idea.description}</p>
       </section>
+
       <section className="section_container">
         <Image
           src={idea.ideaImage}
-          alt={idea.ideaTitle}
+          alt={'Idea Image'}
           className="mx-auto !max-w-full max-h-[400px] lg:w-[80vw] md:w-[90vw] h-auto rounded-xl"
           width={900}
           height={500}
@@ -62,6 +60,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
             </Link>
             <p className="category-tag">{idea.category}</p>
           </div>
+
           <h3 className="text-30-bold font-work-sans mb-5">Idea Details</h3>
           {parsedContent ? (
             <article
@@ -72,11 +71,27 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
             <p className="no-result">No details available</p>
           )}
         </div>
+
         <hr className="divider" />
 
-        <Suspense fallback={<Skeleton className="view_skeleton" />}>
-          <ViewCount id={id} />
-        </Suspense>
+        <div className="max-w-4xl mx-auto">
+          <Suspense fallback={<Skeleton className="view_skeleton" />}>
+            <ViewCount id={id} initialCount={idea.viewCount || 0} />
+          </Suspense>
+
+          <div className="mt-10">
+            <Suspense 
+              fallback={
+                <div className="w-full h-32 animate-pulse bg-gray-100 rounded-lg" />
+              }
+            >
+              <CommentSection 
+                ideaId={id} 
+                currentUser={session?.user}
+              />
+            </Suspense>
+          </div>
+        </div>
       </section>
     </>
   );

@@ -10,6 +10,7 @@ import { formSchema } from "@/lib/validation";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { createIdea } from "@/lib/action";
 
 const ideaForm = () => {
   const { toast} = useToast()
@@ -19,28 +20,28 @@ const ideaForm = () => {
   const handleFormSubmit = async (previousState : any , formData : FormData) => {
     try{
       const formValues ={
-        title: formData.get('title') as string,
+        ideaTitle: formData.get('ideaTitle') as string,
         description: formData.get('description') as string,
         category: formData.get('category') as string,
-        link:formData.get('link') as string,
+        ideaImage:formData.get('ideaImage') as string,
         pitch,
 
 
       }
       await formSchema.parseAsync(formValues);
       console.log(formValues)
-      // // const result = await createIdea(formValues);
-      // // console.log(result)
-      // if (result.status == 'SUCCESS'){
-      //   toast( {
-      //     title: "SUCCESS!" ,
-      //     description: "YOur Idea has been created successfully",
+      const result = await createIdea(previousState, formData , pitch);
+     
+      if (result.status == 'SUCCESS'){
+        toast( {
+          title: "SUCCESS!" ,
+          description: "Your Idea has been created successfully",
           
 
-      //   })
-      //   router.push(`/idea/${result.id}`)
-      // }
-      // return result;
+        })
+        router.push(`/idea/${result._id}`)
+      }
+      return result;
     }
     catch(error){
       if(error instanceof z.ZodError ){
@@ -82,15 +83,15 @@ const ideaForm = () => {
         </label>
         <Input
           type="text"
-          id="title"
-          name="title"
+          id="ideaTitle"
+          name="ideaTitle"
           className="startup-form_input"
           required
           placeholder="Title"
           data-ms-editor="true"
           spellCheck="false"
         />
-        {error.title && <p className="startup-form_error">{error.title}</p>}
+        {error.ideaTitle && <p className="startup-form_error">{error.ideaTitle}</p>}
       </div>
       <div>
         <label htmlFor="description" className="startup-form_label">
@@ -124,26 +125,27 @@ const ideaForm = () => {
         {error.category && <p className="startup-form_error">{error.category}</p>}
       </div>
       <div>
-        <label htmlFor="link" className="startup-form_label">
+        <label htmlFor="ideaImage" className="startup-form_label">
           Idea Image URL
         </label>
         <Input
           type="text"
-          id="link"
-          name="link"
+          id="ideaImage"
+          name="ideaImage"
           className="startup-form_input"
           required
           placeholder="Idea Image URL"
           data-ms-editor="true"
           spellCheck="false"
         />
-        {error.link && <p className="startup-form_error">{error.link}</p>}
+        {error.ideaImage && <p className="startup-form_error">{error.ideaImage}</p>}
       </div>
       <div data-color-mode='light'>
-        <label htmlFor="pitch" className="startup-form_label">
+        <label className="startup-form_label">
           Idea Pitch
         </label>
         <MDEditor value={pitch} onChange={(value) => setPitch(value || "")} id="pitch" preview="edit" height={300} style={{borderRadius: 20 ,overflow: "hidden"}}
+        
         textareaProps={{
           placeholder: "Briefly Describe your Idea to convey your message to the world"
         }}

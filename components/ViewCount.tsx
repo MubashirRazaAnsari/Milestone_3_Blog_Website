@@ -1,29 +1,45 @@
-import React from 'react'
-import Ping from './Ping'
-import { StartViewCount } from '@/sanity/lib/queries'
-import { client } from '@/sanity/lib/client'
-import { writeClient } from '@/sanity/lib/write-client'
-import { after } from 'next/server'
-const ViewCount = async ({id} : {id: string}) => {
+'use client';
 
-    const {viewCount} = await client.withConfig({useCdn: false}).fetch(StartViewCount, {id})
+import React, { useEffect } from 'react';
+import Ping from './Ping';
 
-   after(async () => {
-    await writeClient.patch(id).inc({viewCount: 1}).commit()
-   })
+const ViewCount = ({ id, initialCount = 0 }: { id: string; initialCount?: number }) => {
+  const [viewCount, setViewCount] = React.useState(initialCount);
+
+  useEffect(() => {
+    const incrementViewCount = async () => {
+      try {
+        const response = await fetch('/api/views', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ideaId: id }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setViewCount(data.viewCount);
+        }
+      } catch (error) {
+        console.error('Error incrementing view count:', error);
+      }
+    };
+
+    incrementViewCount();
+  }, [id]);
 
   return (
     <div className='view-container'>
-        <div className='absolute -top-2 -right-2'>
-            <Ping />
-        </div>
-        <p className='view-text'>
-            <span className='font-black'>{viewCount} views</span>
-        </p>
-      
+      <div className='absolute -top-2 -right-2'>
+        <Ping />
+      </div>
+      <p className='view-text'>
+        <span className='font-black'>{viewCount} views</span>
+      </p>
     </div>
-  )
-}
+  );
+};
 
-export default ViewCount
+export default ViewCount;
 

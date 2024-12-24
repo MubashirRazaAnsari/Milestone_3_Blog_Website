@@ -64,3 +64,29 @@ export const Ideas_by_id = defineQuery(`*[_type == "idea" && _id == $id][0]{
     bio
   }`);
 
+  export const AUTHOR_By_ID = defineQuery(`
+    *[_type == "author" && _id == $id][0]{
+      _id,
+      name,
+      username,
+      email,
+      authorImage,
+      bio,
+      "ideas": *[_type == "idea" && author._ref == ^._id]{
+        _id,
+        _createdAt,
+        ideaTitle,
+        description,
+        category,
+        ideaImage,
+        viewCount,
+        author->{
+          _id,
+          name,
+          username,
+          authorImage
+        }
+      }
+    }
+  `)
+
