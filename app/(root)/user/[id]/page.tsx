@@ -27,17 +27,17 @@ const page = async ({params}: {params :Promise<{id:string}>}) => {
             <h2 className="text-24-bold text-center">{user.name}</h2>
           </div>
 
-          {user.authorImage ? (
-            <Image
-              src={user.authorImage}
-              alt={user.name}
-              width={120}
-              height={120}
-              className="profile_image"
-            />
-          ) : (
-            <UserIcon className="size-[120px] text-primary" />
-          )}
+            {user.authorImage ? (
+              <Image
+                src={user.authorImage}
+                alt={user.name}
+                width={120}
+                height={120}
+                className="profile_image"
+              />
+            ) : (
+              <UserIcon className="size-[120px] text-primary" />
+            )}
 
           <div className="mt-8 text-center">
             <p className="text-16-medium bg-white-100 p-2 rounded-xl  border-r-4 border-l border-t-2 border-b-8 border-black">@{user.username}</p>

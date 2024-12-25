@@ -19,7 +19,7 @@ export default async function Home({
   const session = await auth();
 
 
-  console.log(session?.user?.id);
+ 
 
   const {data : ideas} = await sanityFetch({query: IdeasQuery, params});
 

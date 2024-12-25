@@ -1,10 +1,11 @@
-import NextAuth, { DefaultSession, Session } from 'next-auth';
+import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import { AUTHOR_By_GitHUB_ID, AUTHOR_By_Email } from "./sanity/lib/queries";
 import { client } from "./sanity/lib/client";
 import { writeClient } from './sanity/lib/write-client';
+import { DefaultSession } from 'next-auth';
 
 // Extend the built-in session types
 declare module 'next-auth' {
@@ -33,6 +34,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true, 
   callbacks: {
     async signIn({ user, profile, account }) {
       if (!user?.email) {
@@ -100,7 +103,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
     },
 
-    async jwt({ token, profile, account }): Promise<ExtendedJWT> {
+    async jwt({ token, profile, account }){
       if (account && profile) {
         try {
           const author = await client
@@ -121,7 +124,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.role = (token.role as string) || 'user';
+        session.user.role = token.role as string || 'user';
       }
       return session;
     },

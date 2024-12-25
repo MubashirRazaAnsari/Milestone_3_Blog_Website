@@ -1,9 +1,10 @@
+/* eslint-disable */
 import { client } from '@/sanity/lib/client';
 import { NextResponse } from 'next/server';
 
 export async function GET(
   req: Request,
-  { params }: { params: { ideaId: string } }
+  { params }: { params: Promise<{ ideaId: string }> }
 ) {
   try {
     const comments = await client.fetch(`
@@ -18,7 +19,7 @@ export async function GET(
           authorImage
         }
       }
-    `, { ideaId: params.ideaId });
+    `, { ideaId: (await params).ideaId });
 
     return NextResponse.json(comments);
   } catch (error) {

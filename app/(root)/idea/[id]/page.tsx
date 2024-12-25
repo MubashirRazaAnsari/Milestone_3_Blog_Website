@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { client } from "@/sanity/lib/client";
 import { Ideas_by_id } from "@/sanity/lib/queries";
 import React, { Suspense } from "react";

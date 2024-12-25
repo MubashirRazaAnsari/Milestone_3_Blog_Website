@@ -4,15 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import { Button } from "./ui/button";
-import { urlFor } from "@/sanity/lib/imageUrl";
 import { Idea, Author } from "@/sanity.types";
 
 export type IdeaCardType = Omit<Idea, "author"> & { author: Author };
 const IdeaCard = ({ idea }: { idea: IdeaCardType }) => {
   const formattedDate = idea._createdAt ? formatDate(idea._createdAt) : "N/A";
-  // const authorName = idea.author?.name || "Unknown Author";
-  // const ideaImageUrl = urlFor(idea.ideaImage).width(48).height(48).url()
-  // const authorImageUrl = urlFor(idea.author.authorImage).url();
 
   const {
     ideaImage,
